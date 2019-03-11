@@ -1,0 +1,163 @@
+#okubax
+
+
+# GENERAL {{{
+
+
+set $mod Mod4
+floating_modifier $mod
+popup_during_fullscreen smart
+
+gaps inner 30
+gaps outer 30
+
+font pango: fira code 14
+for_window [class="^.*"] border pixel 5
+# Set colors from Xresources
+# Change 'color7' and 'color2' to whatever colors you want i3 to use 
+# from the generated scheme.
+# NOTE: The '#f0f0f0' in the lines below is the color i3 will use if
+# it fails to get colors from Xresources.
+set_from_resource $fg i3wm.color2 #262020
+set_from_resource $bg i3wm.color7 #262020
+
+
+# class                 border  backgr. text indicator child_border
+client.focused          #5c939e     $fg     $bg  $bg       $bg
+client.focused_inactive #5c939e     $bg     $fg  $bg       $bg
+client.unfocused        #5c939e     $bg     $fg  $bg       $bg
+client.urgent           #5c939e     $bg     $fg  $bg       $bg
+client.placeholder      #5c939e     $bg     $fg  $bg       $bg
+
+client.background       $bg
+
+# WINDOW RULES {{{
+
+
+for_window [class="xpad" instance="scratchpad"] move scratchpad
+for_window [class="Firefox|MPlayer|Galculator|Code|Gsimplecal|Viewnior|xpad|calibre|Java|Spotify|Google-musicmanager|File-roller|Lxappearance|Arandr|Pavucontrol|emulator64-arm|Kamoso|PkgBrowser|Gimp|Main.py|qemu-system-x86_64|Pinentry"] floating enable
+for_window [class="Thunar"] floating enable,resize set 880 640
+for_window [title="TrueCrypt|Google Keep"] floating enable
+for_window [title="File Operation Progress" class="Thunar"] floating enable
+for_window [window_role="pop-up"] floating enable,move absolute center
+# force floating for all new windows
+#for_window [class="[.]*"] floating enable
+
+
+# }}}
+
+
+
+
+# KEYBINDS {{{
+
+
+bindsym $mod+Shift+C reload
+bindsym $mod+Shift+R restart
+bindsym $mod+q kill
+bindsym $mod+Shift+E exit
+bindsym $mod+f fullscreen
+bindsym $mod+Shift+space floating toggle
+bindsym $mod+space focus mode_toggle
+bindsym $mod+bar split h
+bindsym $mod+underscore split v
+bindsym $mod+s layout stacking
+bindsym $mod+x layout tabbed
+bindsym $mod+z layout default
+
+
+# move focused window
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
+
+# workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+
+bindsym $mod+Tab workspace back_and_forth
+
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+
+
+assign [class="Qemu-system-x86_64"] → 5
+assign [class="Zathura|Soffice|calibre|libreoffice-writer|libreoffice-calc"] → 4
+assign [instance="libreoffice"] → 4
+assign [class="Wine|Steam|dontstarve"] → 6
+
+
+mode "resize" {
+        # These bindings trigger as soon as you enter the resize mode
+
+        bindsym h resize shrink width 10 px or 10 ppt
+        bindsym j resize grow height 10 px or 10 ppt
+        bindsym k resize shrink height 10 px or 10 ppt
+        bindsym l resize grow width 10 px or 10 ppt
+	# arrow keys #
+	# bindsym 113 right
+
+        # back to normal: Enter or Escape
+        bindsym Return mode "default"
+        bindsym Escape mode "default"
+}
+
+bindsym $mod+r mode "resize"
+
+# Audio Controls
+bindsym XF86AudioPlay exec "mpc toggle"
+bindsym XF86AudioStop exec "mpc stop"
+bindsym XF86AudioNext exec "mpc next"
+bindsym XF86AudioPrev exec "mpc prev"
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume 0 +5%
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume 0 -5%
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute 0 toggle
+bindsym mod1+a exec playerctl play
+bindsym mod1+s exec playerctl pause
+bindsym mod1+x exec playerctl next
+bindsym mod1+z exec playerctl previous
+
+
+#APPS
+bindsym $MOD+Return exec urxvt -e tmux
+bindsym $MOD+p exec interrobang
+bindsym $mod+w exec chromium
+bindsym $MOD+SHIFT+t exec urxvt -e htop
+bindsym Print exec $HOME/bin/screen root
+bindsym Mod1+p exec $HOME/bin/screen active
+
+
+# }}}
+
+
+
+
+#bar {
+#    mode hide
+#    hidden_state hide
+#    modifier Mod1
+#    position bottom
+#    workspace_buttons no
+#}
+
+
+
+
+# PROGRAM AUTOSTART {{{
+exec xrdb -merge ~/.Xresources
+
+
+
+
+# }}}
+
+# vim:filetype=i3
